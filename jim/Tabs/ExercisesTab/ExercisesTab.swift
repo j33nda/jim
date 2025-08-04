@@ -70,6 +70,7 @@ struct ExercisesTab: View {
                 } label: {
                     Text("Add")
                 }
+                .disabled(name.isEmpty)
             }
         }
     }

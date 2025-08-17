@@ -22,10 +22,9 @@ struct SessionView: View {
             
             ScrollView {
                 
-                addExerciseButton
-                    .onTapGesture {
-                        newExerciseSheet.toggle()
-                    }
+                if session.exercises.isEmpty {
+                    noExercisePlaceHolder
+                }
                 
                 ForEach(session.exercises) { exercise in
                     
@@ -46,6 +45,12 @@ struct SessionView: View {
                         newExerciseSheet = false
                     }
             }
+        }
+        .overlay(alignment: .bottom) {
+            addExerciseButton
+                .onTapGesture {
+                    newExerciseSheet.toggle()
+                }
         }
         
     }
@@ -72,8 +77,13 @@ struct SessionView: View {
                 .font(.headline)
 
         }
-        .frame(height: 50)
+        .frame(width: 150, height: 50)
         .padding()
+    }
+    
+    var noExercisePlaceHolder: some View {
+        Text("Start working out now lil boy")
+            .bold()
     }
 }
 

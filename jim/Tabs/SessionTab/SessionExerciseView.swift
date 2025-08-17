@@ -99,7 +99,7 @@ struct SessionExerciseView: View {
         .background(alignment: .center) {
             
             RoundedRectangle(cornerRadius: 10.0)
-                .fill(Color.blueBackground)
+                .fill(Color.gray.opacity(0.05))
         }
         .padding()
     }

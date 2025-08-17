@@ -18,6 +18,10 @@ struct AppModelContainer {
         let config = ModelConfiguration()
         container = try ModelContainer(for: Session.self, configurations: config)
         
+        
+    }
+    
+    func insertDefaultExercises() {
         for e in exsTypes {
             container.mainContext.insert(e)
         }

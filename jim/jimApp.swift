@@ -12,11 +12,14 @@ struct jimApp: App {
     var appModelContainer: AppModelContainer
     
     init() {
+        
         do {
             appModelContainer = try AppModelContainer()
         } catch {
             fatalError("Failed to configure SwiftData container. \(error.localizedDescription)")
         }
+        
+        insertDefaultExercisesIfNeeded()
     }
     
     
@@ -24,6 +27,16 @@ struct jimApp: App {
         WindowGroup {
             ContentView()
                 .modelContainer(appModelContainer.container)
+        }
+    }
+    
+    func insertDefaultExercisesIfNeeded() {
+        let defaults = UserDefaults.standard
+        let key = "defaultExercises"
+        
+        if !defaults.bool(forKey: key) {
+            appModelContainer.insertDefaultExercises()
+            defaults.set(true, forKey: key)
         }
     }
 }

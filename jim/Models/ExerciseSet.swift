@@ -10,7 +10,8 @@ import SwiftData
 
 
 @Model
-class ExerciseSet {
+class ExerciseSet: Identifiable {
+    var id = UUID()
     var reps: Int = 0
     var load: Int = 0
     

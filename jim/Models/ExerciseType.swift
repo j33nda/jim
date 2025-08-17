@@ -11,7 +11,7 @@ import SwiftData
 
 @Model
 class ExerciseType: Identifiable {
-    @Attribute(.unique)
+    var id = UUID()
     var name: String
     var unit: String
     

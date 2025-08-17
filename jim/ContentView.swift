@@ -19,6 +19,10 @@ struct ContentView: View {
                 ExercisesTab()
             }
             
+            Tab("Settings", systemImage: "gear") {
+                SettingsTab()
+            }
+            
         }
     }
 }

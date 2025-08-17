@@ -16,6 +16,7 @@ struct ExercisesTab: View {
     
     @State var addNewExerciseSheet: Bool = false
     @State var name = ""
+    @State var unit = ""
     
     
     var body: some View {
@@ -60,11 +61,14 @@ struct ExercisesTab: View {
             Form {
                 
                 TextField("Name", text: $name)
+                TextField("Unit", text: $unit)
+                
             }
             .toolbar {
                 Button {
-                    context.insert(ExerciseType(name: name))
+                    context.insert(ExerciseType(name: name, unit: unit))
                     name = ""
+                    unit = ""
                     addNewExerciseSheet = false
                     print("added new exercise")
                 } label: {
@@ -72,6 +76,7 @@ struct ExercisesTab: View {
                 }
                 .disabled(name.isEmpty)
             }
+            .presentationDetents([.medium])
         }
     }
 }

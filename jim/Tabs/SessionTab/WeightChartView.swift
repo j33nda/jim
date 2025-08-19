@@ -69,7 +69,7 @@ struct WeightChartView: View {
     
     func readBodyMass() {
         let bodyMassType = HKSampleType.quantityType(forIdentifier: .bodyMass)!
-    
+        
         let endDay = Date.now
         let threeMonths: TimeInterval = 3600 * 24 * 90
         let startDay = endDay - threeMonths
@@ -77,24 +77,32 @@ struct WeightChartView: View {
         
         let query = HKSampleQuery(sampleType: bodyMassType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { query, results, error in
             
-            if let querySamples = results {
-                var temp: [WeightDataPoint] = []
-                
-                for sample in querySamples {
-                    let qSample = sample as! HKQuantitySample
-                    let day = qSample.startDate
-                    let weight = qSample.quantity.doubleValue(for: .gram()) / 1000.0
-                    temp.append(.init(weight, day))
-                    
-                }
-                
-                weightDataPoints = temp
-                let min = min(targetWeight, weightDataPoints.map(\.weight).min()!)
-                let max = max(targetWeight, weightDataPoints.map(\.weight).max()!)
-                
-                yDomain = [min - 2, max + 2]
-                
+            guard let querySamples = results as? [HKQuantitySample] else {
+                // do smth
+                return
             }
+            
+            
+            var temp: [WeightDataPoint] = []
+            
+            for sample in querySamples {
+                
+                let day = sample.startDate
+                let weight = sample.quantity.doubleValue(for: .gram()) / 1000.0
+                temp.append(.init(weight, day))
+            }
+            
+            weightDataPoints = temp
+            var yMin: Double = 50
+            var yMax: Double = 90
+            
+            if !temp.isEmpty {
+                yMin = min(targetWeight, weightDataPoints.map(\.weight).min()!)
+                yMax = max(targetWeight, weightDataPoints.map(\.weight).max()!)
+            }
+            
+            yDomain = [yMin - 2, yMax + 2]
+            
         }
         
         hs.execute(query)
@@ -102,9 +110,9 @@ struct WeightChartView: View {
 }
 
 #Preview {
-    WeightChartView(weightDataPoints: [.init(70, Date.now - 3600*24*1 ),
-                                       .init(70.2, Date.now - 3600*24*2 ),
-                                       .init(71, Date.now - 3600*24*3 ),
-                                       .init(72, Date.now - 3600*24*4 )]
+    WeightChartView(weightDataPoints: [.init(60, Date.now - 3600*24*4 ),
+                                       .init(70.2, Date.now - 3600*24*3 ),
+                                       .init(71, Date.now - 3600*24*2 ),
+                                       .init(90, Date.now - 3600*24*1 )]
     )
 }

@@ -9,11 +9,13 @@ import SwiftUI
 
 struct ActivityChartView: View {
     
+    internal var spacing: CGFloat = 4.0
+    
     var body: some View {
         
         HStack{
             
-            Grid(horizontalSpacing: 5, verticalSpacing: 5) {
+            Grid(horizontalSpacing: spacing, verticalSpacing: spacing) {
                 
                 ForEach(0..<7) { row in
                     
@@ -29,7 +31,7 @@ struct ActivityChartView: View {
                         }
                         .gridColumnAlignment(.trailing)
                         .bold()
-                        .font(.caption)
+                        .font(.system(size: 10.0))
                         
                         ForEach(0..<12) { column in
                             
@@ -47,12 +49,13 @@ struct ActivityRectangle: View {
     
     var active: Bool
     var today: Bool = false
+    internal var size: CGFloat = 13
     
     var body: some View {
         
         RoundedRectangle(cornerRadius: 2)
             .fill(active ? .green.opacity(0.5) : .gray.opacity(0.2) )
-            .frame(maxWidth: 15, maxHeight: 15)
+            .frame(maxWidth: size, maxHeight: size)
             .aspectRatio(1, contentMode: .fit)
     }
 }

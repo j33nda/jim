@@ -23,15 +23,7 @@ struct SessionExerciseView: View {
             
             HStack {
                 
-                Label {
-                    Text(exercise.type.name)
-                        .bold()
-                } icon: {
-                    if exercise.sets.count > 0 {
-                        Text("\(exercise.sets.count) x")
-                    }
-
-                }
+                label
 
                 Spacer()
                 
@@ -40,6 +32,7 @@ struct SessionExerciseView: View {
                     withAnimation(){
                         add.toggle()
                     }
+                    
                 } label: {
                     
                     if !add {
@@ -57,43 +50,7 @@ struct SessionExerciseView: View {
             }
         
             if add {
-                
-                HStack {
-                    
-                    Spacer()
-                    
-                    Picker("Reps", selection: $newReps) {
-                        
-                        ForEach(0..<100) { i in
-                            Text("\(i)")
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 75, height: 75)
-                    
-                    Text("x")
-                    
-                    Picker("Load", selection: $newLoad) {
-                        
-                        ForEach(0..<500) { i in
-                            Text("\(i)")
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(width: 75, height: 75)
-                    
-                    Button {
-                        
-                        withAnimation {
-                            exercise.sets.append(ExerciseSet(reps: newReps, load: newLoad))
-                        }
-                    } label: {
-                        
-                        Text("Add")
-                    }
-                    .buttonStyle(.bordered)
-                    .padding()
-                }
+                addRepsView
             }
         }
         .background(alignment: .center) {
@@ -102,6 +59,65 @@ struct SessionExerciseView: View {
                 .fill(Color.gray.opacity(0.05))
         }
         .padding()
+    }
+    
+    
+    
+    var addRepsView: some View {
+        
+        VStack {
+            
+            HStack {
+                Spacer()
+
+                Picker("Reps", selection: $newReps) {
+                    
+                    ForEach(0..<100) { i in
+                        Text("\(i)")
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 75, height: 75)
+                
+                Text("x")
+                
+                Picker("Load", selection: $newLoad) {
+                    
+                    ForEach(0..<500) { i in
+                        Text("\(i)")
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(width: 75, height: 75)
+                
+                Text(exercise.type.unit)
+            }
+            
+            
+            Button {
+                withAnimation {
+                    exercise.sets.append(ExerciseSet(reps: newReps, load: newLoad))
+                }
+            } label: {
+                
+                Text("Add")
+            }
+            .buttonStyle(.bordered)
+            
+        }
+        .padding()
+    }
+    
+    var label: some View {
+        Label {
+            Text(exercise.type.name)
+                .bold()
+        } icon: {
+            if exercise.sets.count > 0 {
+                Text("\(exercise.sets.count) x")
+            }
+
+        }
     }
 }
 

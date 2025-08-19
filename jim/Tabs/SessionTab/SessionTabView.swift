@@ -20,49 +20,44 @@ struct SessionTabView: View {
         
         NavigationStack {
             
-            VStack {
+            ScrollView{
                 
-                HStack {
-                    
-                    Spacer()
-                    activityChart
-                }
-                .padding(.top)
+                activityChart
+                    .padding(.top)
                 
                 weightChart
                     .padding(.top)
                     .padding(.bottom)
                 
-                ScrollView{
+                
+                LazyVGrid(columns: [GridItem(spacing: spacing), GridItem(spacing: spacing)], spacing: spacing) {
                     
-                    LazyVGrid(columns: [GridItem(spacing: spacing), GridItem(spacing: spacing)], spacing: spacing) {
+                    Button {
+                        print("add session")
                         
-                        Button {
-                            print("add session")
-                            
-                            context.insert(Session())
-                            
-                        } label: {
-                            plusCard
-                        }
-                        .tint(.green)
+                        context.insert(Session())
                         
-                        ForEach(sessions) { session in
-                            
-                            NavigationLink(value: session, label: {
-                                SessionCardView(duration: session.duration, date: session.date)
-                                    .contextMenu{
-                                        Button {
-                                            context.delete(session)
-                                        } label: {
-                                            Text("Delete")
-                                        }
+                    } label: {
+                        plusCard
+                    }
+                    .tint(.green)
+                    
+                    ForEach(sessions) { session in
+                        
+                        NavigationLink(value: session, label: {
+                            SessionCardView(duration: session.duration, date: session.date)
+                                .contextMenu{
+                                    Button {
+                                        context.delete(session)
+                                    } label: {
+                                        Text("Delete")
                                     }
-                            })
-                            .tint(.primary)
-                        }
+                                }
+                        })
+                        .tint(.primary)
                     }
                 }
+                
             }
             .navigationDestination(for: Session.self, destination: { session in
                 SessionView(session: session)
@@ -73,19 +68,11 @@ struct SessionTabView: View {
     
     
     var activityChart: some View {
-        
         ActivityChartView()
     }
     
     var weightChart: some View {
-        ZStack{
-            
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.gray.opacity(0.3))
-                .frame(height: 100)
-            
-            Text("Weight Chart")
-        }
+        WeightChartView()
     }
     
     
